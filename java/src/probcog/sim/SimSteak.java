@@ -43,7 +43,7 @@ public class SimSteak extends SimBoxPC{
     	if(stateName.equals("cooking") && stateVal.equals("true")){
     		if(!isCooked){
     			temp++;
-    			if(temp > 60){
+    			if(temp > 10){
     				isCooked = true;
     	        	this.color = cookedColor;
     	        	super.setState("cooked", "true");

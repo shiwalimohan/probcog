@@ -34,7 +34,7 @@ public class SimStove extends SimLocation implements ISimEffector{
 		double dx = Math.abs(diff[0]);
 		double dy = Math.abs(diff[1]);
 		if(dx < lwh[0] * scale && dy < lwh[1] * scale){
-			// Center of object is over the stove, cook it!
+			// Center of object is over the stove, cook it
 			((ISimStateful)simObj).setState("cooking", "true");
 		}
 	}
