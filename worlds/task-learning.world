@@ -2,8 +2,8 @@
 {
 	1
 	vec 6
-	-0.2 0.2 -0.1 0.0 0.0 0.0
-	0.1
+	-0.2 0.2 0.1 0.0 0.0 0.0
+	0.2
 	vec 4
 	0.0 0.0 1.0 1.0
 	1
@@ -15,7 +15,7 @@
 	2
 	vec 6
 	0.2 -0.2 -0.1 0.0 0.0 0.0
-	0.1
+	0.2
 	vec 4
 	0.0 1.0 0.0 1.0
 	0
@@ -25,77 +25,62 @@
 {
 	3
 	vec 6
-	-0.2 -0.2 -0.1 0.0 0.0 0.0
-	0.1
+	-0.2 -0.2 0.1 0.0 0.0 0.0
+	0.2
 	vec 4
 	1.0 0.0 0.0 1.0
-	0
+	1
+	door=open
 	garbage
 }
 "probcog.sim.SimStove"
 {
 	4
 	vec 6
-	0.2 0.2 -0.1 0 0 0
-	0.1
+	0.2 0.2 0.1 0.0 0.0 0.0
+	0.2
 	vec 4
 	1.0 1.0 0.0 1.0
 	0
-	stove
+	oven
 }
-"probcog.sim.SimBoxPC"
+
+"probcog.sim.SimArchPC"
 {
-	5
+	15	
 	vec 6
-	.2 .2 .05 0 0 0
-	0.08
+	0.220699158825434 0 0.05 0.0 -0.0 3.14000000000000
+	0.0400000000000000
 	vec 4
-	0.9 0.0 0.0 1.0
-  3
+	1.00000000000000 0.00000000000000 0.00000000000000 1.00000000000000
+	3
 	color=color-red
-	shape=shape-square
+	shape=shape-arch
 	size=size-medium
-	vec 3
-	1 1 1
 }
 "probcog.sim.SimSpherePC"
 {
-	6
+	-1
 	vec 6
-	-.2 .2 .05 0 0 0
-	0.06
+	-0.0395983304626152 0.220276487009339 0.0500000000000000 0.00000000000000 -0.00000000000000 0.00000000000000
+	0.0500000000000000
 	vec 4
-	0.0 0.0 0.9 1.0
+	0.00000000000000 1.00000000000000 0.00000000000000 1.00000000000000
+	3
+	color=color-green
+	shape=shape-sphere
+	size=size-medium
+}
+"probcog.sim.SimLBlockPC"
+{
+	-1
+	vec 6
+	0.0 -0.270062360340575 0.0500000000000000 0.00000000000000 -0.00000000000000 3.14000000000000
+	0.0300000000000000
+	vec 4
+	0.00000000000000 0.00000000000000 1.00000000000000 1.00000000000000
 	3
 	color=color-blue
-	shape=shape-sphere
-	size=size-large
-}
-"probcog.sim.SimArchPC"
-{
-	7
-	vec 6
-	.2 -.2 .05 0 0 0
-	0.05
-	vec 4
-	0.0 0.7 0.0 1.0
-  3
-	color=color-green
-	shape=shape-arch
-	size=size-large
-}
-"probcog.sim.SimBoxPC"
-{
-	8
-	vec 6
-	.2 .1 .05 0 0 0
-	0.08
-	vec 4
-	0.9 0.0 0.9 1.0
-  	3
-	color=color-purple
-	shape=shape-square
+	shape=shape-lblock
 	size=size-medium
-	vec 3
-	1 1 1
 }

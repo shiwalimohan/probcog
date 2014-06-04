@@ -1,0 +1,107 @@
+"probcog.sim.SimLocation"
+{
+	1
+	vec 6
+	-0.2 0.2 0.0 0.0 0.0 0.0
+	0.1
+	vec 4
+	0.0 0.0 1.0 1.0
+	1
+	door=closed,open
+	pantry
+}
+"probcog.sim.SimLocation"
+{
+	2
+	vec 6
+	0.2 -0.2 0.0 0.0 0.0 0.0
+	0.1
+	vec 4
+	0.0 1.0 0.0 1.0
+	0
+	table
+}
+"probcog.sim.SimLocation"
+{
+	3
+	vec 6
+	-0.2 -0.2 0.0 0.0 0.0 0.0
+	0.1
+	vec 4
+	1.0 0.0 0.0 1.0
+	0
+	garbage
+}
+"probcog.sim.SimStove"
+{
+	4
+	vec 6
+	0.2 0.2 0.0 0.0 0.0 0.0
+	0.1
+	vec 4
+	1.0 1.0 0.0 1.0
+	0
+	stove
+}
+"probcog.sim.SimSteak"
+{
+	5
+	vec 6
+	0.0 0.3 0.05 0.0 0.0 0.0
+	0.12
+	vec 4
+	1.0 1.0 1.0 1.0
+	2
+	shape=shape-steak
+	size=size-large
+	vec 3
+	1 1 1
+	false
+}
+"probcog.sim.SimSteak"
+{
+	6
+	vec 6
+	0.1 0.3 0.05 0.0 0.0 0.0
+	0.1
+	vec 4
+	1.0 1.0 1.0 1.0
+	2
+	shape=shape-steak
+	size=size-medium-large
+	vec 3
+	1 1 1
+	false
+}
+"probcog.sim.SimSteak"
+{
+	7
+	vec 6
+	0.2 0.3 0.05 0.0 0.0 0.0
+	0.08
+	vec 4
+	1.0 1.0 1.0 1.0
+	2
+	shape=shape-steak
+	size=size-medium
+	vec 3
+	1 1 1
+	false
+}
+"probcog.sim.SimSteak"
+{
+	8
+	vec 6
+	0.0 0.1 0.05 0.0 0.0 0.0
+	0.04
+	vec 4
+	1.0 1.0 1.0 1.0
+	2
+	shape=shape-steak
+	size=size-small
+	vec 3
+	1 1 1
+	false
+}
+
+
