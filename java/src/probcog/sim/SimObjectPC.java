@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import probcog.classify.Classifications;
 import probcog.classify.Features;
@@ -72,7 +73,12 @@ public abstract class SimObjectPC implements SimObject, ISimStateful
 
     public abstract VisObject getVisObject();
     
-    public abstract void resetState();
+    public void resetState(){
+    	Random rand = new Random ();
+    	double[] newPose = LinAlg.matrixToXyzrpy(this.getPose());
+    	newPose[0] = rand.nextFloat() - 0.5;
+    	this.setPose(LinAlg.xyzrpyToMatrix(newPose));
+    }
 
 
 	@Override

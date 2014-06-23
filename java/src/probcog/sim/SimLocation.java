@@ -17,6 +17,7 @@ import probcog.util.*;
 public class SimLocation extends SimObjectPC{
     private String name;
     protected double[] lwh = new double[]{1, 1, 1};
+	private String locationType;
 
     public SimLocation(SimWorld sw)
     {
@@ -25,41 +26,42 @@ public class SimLocation extends SimObjectPC{
 
     public VisObject getVisObject()
     {
-        ArrayList<Object> objs = new ArrayList<Object>();
-        
+        ArrayList<Object> objs = new ArrayList<Object>();        
         objs.add(LinAlg.scale(scale));
-
-        // if the door is open, draw an open box
-        if(currentState.containsKey("door") && currentState.get("door").equals("open")) {
-        	objs.add(new VisChain(LinAlg.translate(-0.5,0,0), 
-        						LinAlg.rotateY(Math.PI/2),
-        						LinAlg.scale(0.5),
-        						new VzRectangle(new VzMesh.Style(color))));
-        	objs.add(new VisChain(LinAlg.translate(0.5,0,0), 
-								LinAlg.rotateY(Math.PI/2),
-								LinAlg.scale(0.5),
-								new VzRectangle(new VzMesh.Style(color))));
-        	objs.add(new VisChain(LinAlg.translate(0,0.5,0), 
-								LinAlg.rotateX(Math.PI/2),
-								LinAlg.scale(0.5),
-								new VzRectangle(new VzMesh.Style(color))));
-        	objs.add(new VisChain(LinAlg.translate(0,-0.5,0), 
-								LinAlg.rotateX(Math.PI/2),
-								LinAlg.scale(0.5),
-								new VzRectangle(new VzMesh.Style(color))));
-            objs.add(new VisChain(LinAlg.translate(0,0,-0.5),
-            					LinAlg.scale(0.5),
-                                new VzRectangle(new VzMesh.Style(color))));
-        }else {
-        	 // The larger box making up the background of the object
-            objs.add(new VisChain(LinAlg.translate(0, 0, 0), new VzBox(new VzMesh.Style(color))));
-            if(currentState.containsKey("heat") && currentState.get("heat").equals("on")){
-            	objs.add(new VisChain(LinAlg.translate(0,0,0.52),
-    					LinAlg.scale(0.3),
-                        new VzCircle(new VzMesh.Style(Color.RED))));
-            }
-        }
         
+		if (locationType.equals("container")) {
+			// if the door is open, draw an open box
+			if (currentState.containsKey("door")
+					&& currentState.get("door").equals("open")) {
+				objs.add(new VisChain(LinAlg.translate(-0.5, 0, 0), LinAlg
+						.rotateY(Math.PI / 2), LinAlg.scale(0.5),
+						new VzRectangle(new VzMesh.Style(color))));
+				objs.add(new VisChain(LinAlg.translate(0.5, 0, 0), LinAlg
+						.rotateY(Math.PI / 2), LinAlg.scale(0.5),
+						new VzRectangle(new VzMesh.Style(color))));
+				objs.add(new VisChain(LinAlg.translate(0, 0.5, 0), LinAlg
+						.rotateX(Math.PI / 2), LinAlg.scale(0.5),
+						new VzRectangle(new VzMesh.Style(color))));
+				objs.add(new VisChain(LinAlg.translate(0, -0.5, 0), LinAlg
+						.rotateX(Math.PI / 2), LinAlg.scale(0.5),
+						new VzRectangle(new VzMesh.Style(color))));
+				objs.add(new VisChain(LinAlg.translate(0, 0, -0.5), LinAlg
+						.scale(0.5), new VzRectangle(new VzMesh.Style(color))));
+			} else {
+				// The larger box making up the background of the object
+				objs.add(new VisChain(LinAlg.translate(0, 0, 0), new VzBox(
+						new VzMesh.Style(color))));
+				if (currentState.containsKey("heat")
+						&& currentState.get("heat").equals("on")) {
+					objs.add(new VisChain(LinAlg.translate(0, 0, 0.52), LinAlg
+							.scale(0.3), new VzCircle(new VzMesh.Style(
+							Color.RED))));
+				}
+			}
+        } else {
+        	  objs.add(new VisChain(LinAlg.translate(0, 0, 0.01), LinAlg.scale(0.5), new VzRectangle(new VzMesh.Style(color))));	
+        }
+
         // The name of the location
         objs.add(new VisChain(LinAlg.rotateZ(Math.PI/2), LinAlg.translate(0,0.8,0.5),
                               LinAlg.scale(0.02),
@@ -115,6 +117,7 @@ public class SimLocation extends SimObjectPC{
     	super.read(ins);
 
         name = ins.readString();
+        locationType = ins.readString();
     }
 
     public void write(StructureWriter outs) throws IOException

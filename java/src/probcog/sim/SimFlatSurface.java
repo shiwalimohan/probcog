@@ -14,8 +14,7 @@ import probcog.classify.Features.FeatureCategory;
 import probcog.perception.*;
 import probcog.util.*;
 
-public class SimFlatSurface extends SimObjectPC
-{
+public class SimFlatSurface extends SimLocation{
     protected double[] lwh = new double[]{1, 1, 1};
 
     public SimFlatSurface(SimWorld sw)
@@ -46,7 +45,7 @@ public class SimFlatSurface extends SimObjectPC
     	lwh[1] = ins.readDouble();
     	lwh[2] = 0.001;
     }
-
+    
     public void write(StructureWriter outs) throws IOException
     {
     	outs.writeDouble(lwh[0]);

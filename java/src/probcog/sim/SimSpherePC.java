@@ -28,10 +28,4 @@ public class SimSpherePC extends SimObjectPC{
 	public VisObject getVisObject() {
 		return new VzSphere(scale, new VzMesh.Style(color));
 	}
-
-	@Override
-	public void resetState() {
-		// TODO Auto-generated method stub
-		
-	}
 }
