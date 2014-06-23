@@ -40,6 +40,8 @@ public class SimArm implements LCMSubscriber
         new ExpiringMessageCache<dynamixel_command_list_t>(0.25);
 
     SimObject grabbed = null;
+    
+    double[][] deltaGrabbed = null;
 
     // In the ideal world, we would actually have a better understanding of
     // which arm we were modeling and how it was constructed such that we could
@@ -79,7 +81,7 @@ public class SimArm implements LCMSubscriber
         double dt = 1.0/Hz;
 
         double[][] lastPose = arm.getGripperPose();
-        double[][] deltaGrabbed = null;
+      
 
         public void run()
         {
@@ -302,4 +304,20 @@ public class SimArm implements LCMSubscriber
     {
         // XXX Start up a simulation
     }
+    
+    public void setGrabbed(Integer id){
+    	for (SimObject obj: simWorld.objects){
+    		if (((SimObjectPC) obj).getID() == id){
+    			grabbed = obj;
+    			deltaGrabbed = LinAlg.identity(5);
+    		}
+    	}
+    }
+
+	public void resetArm() {
+		if (grabbed != null){
+			((SimObjectPC) grabbed).resetState();
+			grabbed = null;
+		}	
+	}
 }

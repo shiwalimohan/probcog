@@ -123,7 +123,7 @@ public class PerceptionGUI extends JFrame implements LCMSubscriber
         simulator = new ProbCogSimulator(opts, vw, vl, vc);
 
         // Initialize object tracker
-        tracker = new Tracker(config, opts.getBoolean("kinect"), opts.getBoolean("perfectseg"), simulator.getWorld());
+      
 
         // XXX Is this how we always want to do this?
         // Spin up a virtual arm in sim world
@@ -138,6 +138,7 @@ public class PerceptionGUI extends JFrame implements LCMSubscriber
             (new Thread(driver)).start();
         } else {
             SimArm simArm = new SimArm(config, simulator.getWorld());
+            tracker = new Tracker(config, opts.getBoolean("kinect"), opts.getBoolean("perfectseg"), simulator.getWorld(), simArm);
         }
 
         if (opts.getBoolean("debug")) {
@@ -239,7 +240,7 @@ public class PerceptionGUI extends JFrame implements LCMSubscriber
        resetState.addActionListener(new ActionListener()
        		{
     	   		public void actionPerformed(ActionEvent e){
-    	   			tracker.resetState();
+    	   			tracker.resetState(15, 1, "new");
     	   		}
        		}
        );

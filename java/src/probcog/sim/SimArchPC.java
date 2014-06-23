@@ -50,7 +50,6 @@ public class SimArchPC extends SimObjectPC{
 
 	@Override
 	public void resetState() {
-		// TODO Auto-generated method stub
 		
 	}
 	

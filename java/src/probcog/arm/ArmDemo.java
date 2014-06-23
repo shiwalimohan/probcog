@@ -440,7 +440,7 @@ public class ArmDemo implements LCMSubscriber
                                               new Config());
      
                 SimArm simArm = new SimArm(config, world);
-                tracker = new Tracker(config, false, false, world,simArm);
+                tracker = new Tracker(config, false, false, world, simArm);
             }
             ArmController controller = new ArmController(config);
             ArmDemo demo = new ArmDemo(config, tracker);

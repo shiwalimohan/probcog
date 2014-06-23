@@ -149,4 +149,14 @@ public class SimLocation extends SimObjectPC{
 				currentState.put("heat", "off");
 		}
 	}
+
+	public void setObjectRelation(SimObjectPC object, String relation) {
+		Random rand = new Random ();
+		Boolean bool = rand.nextBoolean();
+		if (bool == true)
+			object.setPose(this.getPose());
+		else
+			object.resetState();
+	}
+
 }

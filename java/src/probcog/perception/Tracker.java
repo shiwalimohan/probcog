@@ -710,13 +710,31 @@ public class Tracker
         }
     }
 
-	public void resetState() {
+	public void resetState(Integer objectId, Integer locationId, String relation) {
 		ArrayList<SimObject> objects = world.objects;
+		SimObjectPC object = null;
+		SimLocation location = null;
+		
+		arm.resetArm();
+		
 		for(SimObject obj : objects){
-	//		System.out.println("object " + obj.toString());
-			((SimObjectPC)obj).resetState();
+			if(((SimObjectPC)obj).getID() == objectId){
+				object = (SimObjectPC) obj;
+			} else { 
+				((SimObjectPC)obj).resetState();
+			}
+			if (((SimObjectPC)obj).getID() == locationId){
+				location = (SimLocation) obj;
+			}
 		}
+		Random rand = new Random ();
+		float val = rand.nextFloat();
 		
-		
+		if (val < 0.33){
+			arm.setGrabbed(objectId);
+		}
+		else
+			location.setObjectRelation(object, relation);
+			
 	}
 }
