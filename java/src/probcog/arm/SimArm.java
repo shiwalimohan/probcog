@@ -154,7 +154,8 @@ public class SimArm implements LCMSubscriber
                                 if (Collisions.collision(so.getShape(),
                                                          so.getPose(),
                                                          arm.getGripperShape(),
-                                                         arm.getFingerPose()))
+                                                         arm.getFingerPose()) &&
+                                                         !so.getClass().getSimpleName().equals("SimLocation"))
                                 {
                                     if (grabbed != null) {
                                         double[] curxyzrpy = LinAlg.matrixToXyzrpy(grabbed.getPose());

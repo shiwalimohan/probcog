@@ -71,6 +71,8 @@ public abstract class SimObjectPC implements SimObject, ISimStateful
     public abstract Shape getShape();
 
     public abstract VisObject getVisObject();
+    
+    public abstract void resetState();
 
 
 	@Override

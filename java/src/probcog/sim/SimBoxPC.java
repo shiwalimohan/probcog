@@ -46,4 +46,10 @@ public class SimBoxPC extends SimObjectPC{
 		super.write(outs);
 		outs.writeDoubles(lwh);
     }
+
+	@Override
+	public void resetState() {
+		// TODO Auto-generated method stub
+		
+	}
 }

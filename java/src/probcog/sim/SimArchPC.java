@@ -47,6 +47,12 @@ public class SimArchPC extends SimObjectPC{
 
         return new VisChain(objs.toArray());
 	}
+
+	@Override
+	public void resetState() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 

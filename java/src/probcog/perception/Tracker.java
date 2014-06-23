@@ -39,6 +39,7 @@ public class Tracker
     // Arm Stuff
     private Object armLock = new Object();
     private robot_command_t robot_cmd;
+    private SimArm arm;
 
     private Segmenter segmenter;
     private ArmCommandInterpreter armInterpreter;
@@ -59,11 +60,12 @@ public class Tracker
     long soarTime = 0;
 
 
-    public Tracker(Config config_, Boolean physicalKinect, Boolean perfectSegmentation, SimWorld world) throws IOException{
+    public Tracker(Config config_, Boolean physicalKinect, Boolean perfectSegmentation, SimWorld world, SimArm simArm) throws IOException{
 
 
         this.world = world;
         this.perfectSegmentation = perfectSegmentation;
+        this.arm = simArm;
         worldState = new HashMap<Integer, Obj>();
         classyManager = new ClassifierManager(config_);
         armInterpreter = new ArmCommandInterpreter(config_, false);  // Debug off
@@ -707,4 +709,14 @@ public class Tracker
             }
         }
     }
+
+	public void resetState() {
+		ArrayList<SimObject> objects = world.objects;
+		for(SimObject obj : objects){
+	//		System.out.println("object " + obj.toString());
+			((SimObjectPC)obj).resetState();
+		}
+		
+		
+	}
 }

@@ -59,9 +59,10 @@ public class PerceptionGUI extends JFrame implements LCMSubscriber
 
     // GUI Stuff
     JMenuBar menuBar;
-    JMenu controlMenu, editMenu;
+    JMenu controlMenu, editMenu, stateMenu;
     JMenuItem clearData, reloadData;
     JMenuItem undoAction, redoAction;
+    JMenuItem resetState;
 
     // GUI State
     Object selectionLock = new Object();
@@ -229,6 +230,21 @@ public class PerceptionGUI extends JFrame implements LCMSubscriber
                 }
             });
         editMenu.add(redoAction);
+        
+       // Add state menu
+       stateMenu = new JMenu("State");
+       menuBar.add(stateMenu);
+       
+       resetState = new JMenuItem("Reset state");
+       resetState.addActionListener(new ActionListener()
+       		{
+    	   		public void actionPerformed(ActionEvent e){
+    	   			tracker.resetState();
+    	   		}
+       		}
+       );
+       stateMenu.add(resetState);
+       
     }
 
 

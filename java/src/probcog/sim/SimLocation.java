@@ -50,9 +50,15 @@ public class SimLocation extends SimObjectPC{
             objs.add(new VisChain(LinAlg.translate(0,0,-0.5),
             					LinAlg.scale(0.5),
                                 new VzRectangle(new VzMesh.Style(color))));
-        }else 
+        }else {
         	 // The larger box making up the background of the object
             objs.add(new VisChain(LinAlg.translate(0, 0, 0), new VzBox(new VzMesh.Style(color))));
+            if(currentState.containsKey("heat") && currentState.get("heat").equals("on")){
+            	objs.add(new VisChain(LinAlg.translate(0,0,0.52),
+    					LinAlg.scale(0.3),
+                        new VzCircle(new VzMesh.Style(Color.RED))));
+            }
+        }
         
         // The name of the location
         objs.add(new VisChain(LinAlg.rotateZ(Math.PI/2), LinAlg.translate(0,0.8,0.5),
@@ -122,4 +128,25 @@ public class SimLocation extends SimObjectPC{
     public void setRunning(boolean arg0)
     {
     }
+
+	@Override
+	public void resetState() {
+		Random rand = new Random();
+		Boolean bool;
+		if (currentState.containsKey("door") && !name.equals("garbage")){
+			bool = rand.nextBoolean();
+			if (bool == true)
+				currentState.put("door", "open");
+			else
+				currentState.put("door", "closed");
+		}
+		
+		if (currentState.containsKey("heat")){
+			bool = rand.nextBoolean();
+			if (bool == true)
+				currentState.put("heat", "on");
+			else
+				currentState.put("heat", "off");
+		}
+	}
 }
