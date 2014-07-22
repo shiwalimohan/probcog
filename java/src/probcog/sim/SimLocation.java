@@ -96,18 +96,20 @@ public class SimLocation extends SimObjectPC{
             locObj = new Obj(id);
         }
         
-        lwh = new double[]{scale, scale, scale};
+        double[] dims = new double[]{scale*lwh[0], scale*lwh[1], scale*lwh[2]};
 
         double[] pose = LinAlg.matrixToXyzrpy(T);
         locObj.setPose(pose);
         locObj.setCentroid(new double[]{pose[0], pose[1], pose[2]});
-        locObj.setBoundingBox(new BoundingBox(LinAlg.scale(lwh, 1), pose));
+        locObj.setBoundingBox(new BoundingBox(LinAlg.scale(lwh, scale), pose));
         locObj.setVisObject(getVisObject());
         locObj.setShape(getShape());
         locObj.setSourceSimObject(this);
         Classifications location = new Classifications();
         location.add(name, 1.0);
         locObj.addClassifications(FeatureCategory.LOCATION, location);
+        
+        locObj.setStates(this.getCurrentState());
 
         return locObj;
     }

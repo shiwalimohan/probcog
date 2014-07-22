@@ -3,12 +3,19 @@ package probcog.perception;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 import probcog.arm.ArmStatus;
+import probcog.classify.ColorFeatureExtractor;
 import probcog.sensor.KinectSensor;
 import probcog.sensor.Sensor;
 import probcog.sensor.SimKinectSensor;
+import probcog.util.BoundingBox;
+import probcog.util.ConvexHull;
+import probcog.util.Polyhedron3D;
 import probcog.util.Util;
 import april.config.Config;
 import april.jmat.LinAlg;
@@ -19,9 +26,9 @@ import april.util.UnionFindSimple;
 
 public class KinectSegment implements Segmenter
 {
-    final static double COLOR_THRESH = .02;//30;
+    final static double COLOR_THRESH = .025;//30;
     final static double DISTANCE_THRESH = 0.01;
-    final static double MIN_FROM_FLOOR_PLANE = .010; // XXX 0.015
+    final static double MIN_FROM_FLOOR_PLANE = .015; // XXX 0.015
     final static double MIN_OBJECT_SIZE = 100;
     final static double RANSAC_PERCENT = .6;
     final static int RANSAC_ITERATIONS = 1000;
@@ -81,7 +88,7 @@ public class KinectSegment implements Segmenter
 
         // Get points from camera
         long time = TimeUtil.utime();
-        points = kinect.getAllXYZRGB();
+        points = kinect.getAllXYZRGB(true);
         if(Tracker.SHOW_TIMERS){
         	System.out.println("      TRACING: " + (TimeUtil.utime() - time));
         	time = TimeUtil.utime();
@@ -103,7 +110,7 @@ public class KinectSegment implements Segmenter
         
         ArrayList<Obj> segmentedObjects = new ArrayList<Obj>();
         for(PointCloud pc : pointClouds){
-        	segmentedObjects.add(new Obj(false, pc));
+        	segmentedObjects.add(new Obj(false, pc.removeTopPoints(0.05)));
         }
         return segmentedObjects;
     }
@@ -118,6 +125,7 @@ public class KinectSegment implements Segmenter
         // Only calculate the floor plane once
         if(floorPlane == null && points.size() > 0){
             System.out.println("Getting floor plane!");
+            points = kinect.getAllXYZRGB(false);
             floorPlane = RANSAC.estimatePlane(points, RANSAC_ITERATIONS, RANSAC_PERCENT);
         }
 
@@ -141,7 +149,6 @@ public class KinectSegment implements Segmenter
         return true;
     }
 
-
     /** union find- for each pixel, compare with pixels around it and merge if
      ** they are close enough. **/
     public ArrayList<PointCloud> unionFind()
@@ -154,6 +161,7 @@ public class KinectSegment implements Segmenter
             for(int x=0; x<width; x++){
                 int loc = y*width + x;
                 double[] p1 = points.get(loc);
+
                 // Look at neighboring pixels
                 if(!almostZero(p1)){
                     int loc2 = y*width + x+1;
@@ -191,11 +199,98 @@ public class KinectSegment implements Segmenter
                 idToPoints.put(ufID, ptCloud);
             }
         }
-
-        for(PointCloud ptc : idToPoints.values())
-            objects.add(ptc);
+        
+        HashMap<Integer, Integer> mappings = new HashMap<Integer, Integer>();
+        ArrayList<PointCloud> clouds = new ArrayList<PointCloud>();
+        ArrayList<BoundingBox> boxes = new ArrayList<BoundingBox>();
+        int i = 0;
+        for(PointCloud pc : idToPoints.values()){
+        	clouds.add(pc);
+        	boxes.add(pc.getBoundingBox());
+        	mappings.put(i, i);
+        	i++;
+        }
+        
+//        for(i = 0; i < clouds.size(); i++){
+//        	PointCloud c1 = clouds.get(i);
+//        	BoundingBox bbox1 = boxes.get(i);
+//        	for(int j = i+1; j < clouds.size(); j++){
+//        		BoundingBox bbox2 = boxes.get(j);
+//        		PointCloud c2 = clouds.get(j);
+//        		if(BoundingBox.intersects(bbox1, bbox2, 1.1)){
+//        			double[] hsv1 = ColorFeatureExtractor.avgHSV(c1.getPoints());
+//        			double[] hsv2 = ColorFeatureExtractor.avgHSV(c2.getPoints());
+//        			boolean merge = false;
+//        			if(hsv1[0] > .8 && hsv2[0] > .8){
+//        				merge = true;
+//        			} else if(hsv1[0] <= .8 && hsv2[0] <= .8 && hsv1[0] > .65 && hsv2[0] > .65){
+//        				merge = true;
+//        			} else if(hsv1[0] <= .65 && hsv2[0] <= .65 && hsv1[0] > .54 && hsv2[0] > .54){
+//        				merge = true;
+//        			} else if(hsv1[0] <= .54 && hsv2[0] <= .54 && hsv1[0] > .48 && hsv2[0] > .48){
+//        				merge = true;
+//        			} else if(hsv1[0] <= .48 && hsv2[0] <= .48 && hsv1[0] > .2 && hsv2[0] > .2){
+//        				merge = true;
+//        			} else if(hsv1[0] <= .2 && hsv2[0] <= .2){
+//        				merge = true;
+//        			}
+//        			if(merge){
+////        				System.out.println("Merging " + i + " and " + j);
+//        				int newSet = mappings.get(i);
+//        				int oldSet = mappings.get(j);
+//        				HashSet<Integer> setToMerge = new HashSet<Integer>();
+//        				for(Map.Entry<Integer, Integer> e : mappings.entrySet()){
+//        					if(e.getValue() == oldSet){
+//        						setToMerge.add(e.getKey());
+//        					}
+//        				}
+//        				for(Integer pcId : setToMerge){
+//        					mappings.put(pcId, newSet);
+//        				}
+//        			}
+//        		}
+//        	}
+//        }
+        
+        HashMap<Integer, PointCloud> mergedClouds = new HashMap<Integer, PointCloud>();
+        for(Map.Entry<Integer, Integer> e : mappings.entrySet()){
+        	
+//        	System.out.println("Mapping " + e.getKey() + "=" + e.getValue());
+        	PointCloud pc = clouds.get(e.getKey());
+        	if(pc.getPoints().size() < MIN_OBJECT_SIZE){
+        		continue;
+        	}
+        	if(mergedClouds.containsKey(e.getValue())){
+        		mergedClouds.get(e.getValue()).addPoints(pc.getPoints());
+        	} else {
+        		mergedClouds.put(e.getValue(), pc); 
+        	}
+        }
+        
+        for(Map.Entry<Integer, PointCloud> e : mergedClouds.entrySet()){
+        	objects.add(e.getValue());
+        }
+//        System.out.println(mergedClouds.size());
+//
+//        for(PointCloud ptc : idToPoints.values())
+//            objects.add(ptc);
 
         return objects;
+    }
+    
+    double calcContainment(ArrayList<double[]> points, Polyhedron3D poly, int numSamples){
+    	double numContained = 0;
+    	double[] pt = new double[3];
+    	for(int i = 0; i < numSamples; i++){
+    		double[] randPt = points.get((int)(Math.random() * points.size()));
+    		pt[0] = randPt[0];
+    		pt[1] = randPt[1];
+    		pt[2] = randPt[2];
+    		if(poly.contains(pt)){
+    			numContained++;
+    		}
+    	}
+    	return numSamples/numContained;
     }
 
 

@@ -79,12 +79,13 @@ public class PerceptionGUI extends JFrame implements LCMSubscriber
     ViewType viewType;
     ClickType clickType;
     Boolean showSoarObjects;
+    Boolean showSegmentedObjects;
 
     Boolean drawPerceptionObjects = true;
     Boolean drawBeliefObjects = true;
     Boolean drawPropertyLabels = true;
     Boolean drawPointClouds = true;
-    
+
     long soarTime = 0;
 
     public PerceptionGUI(GetOpt opts) throws IOException
@@ -113,7 +114,7 @@ public class PerceptionGUI extends JFrame implements LCMSubscriber
 
 
         // Arm control and arm monitor for rendering purposes
-        controller = new ArmController(config);
+        controller = new ArmController(config);//
         arm = new ArmStatus(config);
 
         // Initialize sensable manager
@@ -155,6 +156,7 @@ public class PerceptionGUI extends JFrame implements LCMSubscriber
         viewType = ViewType.POINT_CLOUD;
         clickType = ClickType.SELECT;
         showSoarObjects = false;
+        showSegmentedObjects = false;
 
         // Subscribe to LCM
         lcm.subscribe("TRAINING_DATA", this);
@@ -258,6 +260,11 @@ public class PerceptionGUI extends JFrame implements LCMSubscriber
 
                 for(int i=0; i<training.num_labels; i++){
                     training_label_t tl = training.labels[i];
+                    if(tl.utime <= soarTime){
+                    	// already seen this label, don't train a second time
+                    	continue;
+                    }
+                    
                     Obj objTrain;
                     synchronized(tracker.stateLock){
                         objTrain = tracker.getObject(tl.id);
@@ -270,7 +277,9 @@ public class PerceptionGUI extends JFrame implements LCMSubscriber
                         }
                     }
                 }
-                soarTime = Math.max(soarTime, training.utime);
+                for(int i = 0; i < training.num_labels; i++){
+                	soarTime = Math.max(soarTime, training.labels[i].utime);
+                }
             }catch (IOException e) {
                 e.printStackTrace();
                 return;
@@ -285,10 +294,8 @@ public class PerceptionGUI extends JFrame implements LCMSubscriber
                 		animation = null;
         			} else if(args[0].equals("reset")){
         				soarTime = 0;
-        				tracker.resetSoarTime();
         			}
         		}
-                soarTime = Math.max(soarTime, command.utime);
         	} catch (IOException e){
         		e.printStackTrace();
         		return;
@@ -300,7 +307,8 @@ public class PerceptionGUI extends JFrame implements LCMSubscriber
     public void sendMessage()
     {
         observations_t obs = new observations_t();
-        obs.utime = Math.max(soarTime, tracker.getSoarTime());
+        obs.utime = TimeUtil.utime();
+        obs.soar_utime = soarTime;
         synchronized(tracker.stateLock){
         	obs.click_id = getSelectedId();
         }
@@ -602,7 +610,7 @@ public class PerceptionGUI extends JFrame implements LCMSubscriber
                 } else {
                 	//drawObjectBoxes();
                 }
-                
+
                 drawSelection(dt);
                 if(drawPerceptionObjects){
                 	drawPerceptionObjects();
@@ -619,9 +627,9 @@ public class PerceptionGUI extends JFrame implements LCMSubscriber
                 }
 
                 arm.render(vw);
-                
+
                 TimeUtil.sleep(1000/fps);
-                
+
             }
         }
     }
@@ -770,6 +778,16 @@ public class PerceptionGUI extends JFrame implements LCMSubscriber
                             continue;   // These don't matter
                         Classifications cs = obj.getLabels(cat);
                         Classifications.Label bestLabel = cs.getBestLabel();
+                        if(cat == FeatureCategory.TEMPERATURE || cat == FeatureCategory.WEIGHT){
+                        	ArrayList<Double> features = obj.getFeatures(cat);
+                        	if(features != null){
+                                labelString += String.format("%s%s:%.3f\n", tf, 
+                                           (cat == FeatureCategory.WEIGHT ? "weight" : "temp" ), obj.getFeatures(cat).get(0));
+                        	}
+                        }
+//                        if(cat == FeatureCategory.COLOR){
+//                        	labelString += String.format("%sColor = %.3f\n", tf, obj.getFeatures(cat).get(3));
+//                        }
                         if(bestLabel.label.equals("unknown")){
                         	continue;
                         }
