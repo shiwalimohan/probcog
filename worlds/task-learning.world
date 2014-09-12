@@ -1,14 +1,13 @@
-"probcog.sim.SimLocation"
+"probcog.sim.SimStove"
 {
-	1
+	4
 	vec 6
-	-0.25 0.25 0.14 0.0 0.0 0.0
-	0.28
+	0.2 0.2 0.1 0.0 0.0 0.0
+	0.2
 	vec 4
-	0.0 0.0 1.0 1.0
-	1
-	door=closed,open
-	pantry
+	1.0 1.0 0.0 1.0
+	0
+	oven
 	container
 }
 
@@ -16,7 +15,7 @@
 {
 	2
 	vec 6
-	0.25 -0.25 0.1 0.0 0.0 0.0
+	0.25 -0.25 -0.14 0.0 0.0 0.0
 	0.28
 	vec 4
 	0.0 1.0 0.0 1.0
@@ -24,37 +23,12 @@
 	table
 	flat
 }
-"probcog.sim.SimLocation"
-{
-	3
-	vec 6
-	-0.25 -0.25 0.14 0.0 0.0 0.0
-	0.28
-	vec 4
-	1.0 0.0 0.0 1.0
-	1
-	door=open
-	garbage
-        container
-}
-"probcog.sim.SimStove"
-{
-	4
-	vec 6
-	0.25 0.25 0.14 0.0 0.0 0.0
-	0.28
-	vec 4
-	1.0 1.0 0.0 1.0
-	0
-	oven
-        container
-}
 
 "probcog.sim.SimArchPC"
 {
 	15	
 	vec 6
-	0.220699158825434 -0.25 0.145 0.0 -0.0 3.14000000000000
+	0.220699158825434 -0.25 0.03 0.0 -0.0 3.14000000000000
 	0.0400000000000000
 	vec 4
 	1.00000000000000 0.00000000000000 0.00000000000000 1.00000000000000
@@ -63,47 +37,79 @@
 	shape=shape-arch
 	size=size-medium
 }
-"probcog.sim.SimSpherePC"
+
+"probcog.sim.SimBoxPC"
 {
-	-1
+	16
 	vec 6
-	-0.0395983304626152 0.220276487009339 0.0500000000000000 0.00000000000000 -0.00000000000000 0.00000000000000
-	0.0500000000000000
+	-0.0395983304626152 0.220276487009339 0.03 0.00000000000000 -0.00000000000000 0.00000000000000
+	0.0800000000000000
 	vec 4
 	0.00000000000000 1.00000000000000 0.00000000000000 1.00000000000000
 	3
 	color=color-green
-	shape=shape-sphere
+	shape=shape-block
 	size=size-medium
+	vec 3
+	1 1 1
 }
 
 
 "probcog.sim.SimArchPC"
 {
-	16	
+	17	
 	vec 6
-	0.2 -0.33 0.145 0.0 -0.0 3.14000000000000
+	0.2 -0.33 0.03 0 -0.0 3.14000000000000
 	0.0400000000000000
 	vec 4
 	0.00000000000000 0.00000000000000 1.00000000000000 1.00000000000000
 	3
 	color=color-blue
 	shape=shape-arch
-	size=size-large
+	size=size-medium
 }
 
 "probcog.sim.SimBoxPC"
 {
-	-1
+	18
 	vec 6
-	0.2 -0.2 0.145  0.00000000000000 -0.00000000000000 0.00000000000000
+	0.2 -0.2 0.05  0.00000000000000 -0.00000000000000 0.00000000000000
 	0.0800000000000000
 	vec 4
 	0.60000000000000 0.00000000000000 1.00000000000000 1.00000000000000
 	3
-	color=color-purple
+        color=color-purple
 	shape=shape-block
 	size=size-medium
+	vec 3
+	1 1 1
+}
+
+"probcog.sim.SimSteak"
+{
+	7
+	vec 6
+	0.2 0.3 0.05 0.0 0.0 0.0
+	0.08
+	vec 4
+	1.0 1.0 1.0 1.0
+	2
+	shape=shape-steak
+	size=size-medium
+	vec 3
+	1 1 1
+}
+"probcog.sim.SimSteak"
+{
+	8
+	vec 6
+	0.0 0.1 0.05 0.0 0.0 0.0
+	0.04
+	vec 4
+	1.0 1.0 1.0 1.0
+	2
+	shape=shape-steak
+	size=size-small
 	vec 3
 	1 1 1
 }

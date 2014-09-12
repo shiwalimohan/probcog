@@ -59,7 +59,7 @@ public class SimLocation extends SimObjectPC{
 				}
 			}
         } else {
-        	  objs.add(new VisChain(LinAlg.translate(0, 0, 0.01), LinAlg.scale(0.5), new VzRectangle(new VzMesh.Style(color))));	
+        	  objs.add(new VisChain(LinAlg.translate(0, 0, 0.5), LinAlg.scale(0.5), new VzRectangle(new VzMesh.Style(color))));	
         }
 
         // The name of the location
