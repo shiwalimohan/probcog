@@ -1,13 +1,14 @@
-"probcog.sim.SimStove"
+"probcog.sim.SimLocation"
 {
-	4
+	1
 	vec 6
-	0.2 0.2 0.1 0.0 0.0 0.0
-	0.2
+	-0.25 0.25 0.14 0.0 0.0 0.0
+	0.28
 	vec 4
-	1.0 1.0 0.0 1.0
-	0
-	oven
+	0.0 0.0 1.0 1.0
+	1
+	door=closed,open
+	pantry
 	container
 }
 
@@ -40,7 +41,7 @@
 
 "probcog.sim.SimBoxPC"
 {
-	16
+	25
 	vec 6
 	-0.0395983304626152 0.220276487009339 0.03 0.00000000000000 -0.00000000000000 0.00000000000000
 	0.0800000000000000
@@ -85,30 +86,61 @@
 	1 1 1
 }
 
-"probcog.sim.SimSteak"
+"probcog.sim.SimArchPC"
 {
-	7
+	19	
 	vec 6
-	0.2 0.3 0.05 0.0 0.0 0.0
-	0.08
+	0.25 -0.25 0.03 0.0 -0.0 3.14000000000000
+	0.0200000000000000
 	vec 4
-	1.0 1.0 1.0 1.0
-	2
-	shape=shape-steak
-	size=size-medium
+	1.00000000000000 0.00000000000000 0.00000000000000 1.00000000000000
+	3
+	color=color-red
+	shape=shape-arch
+	size=size-small
+}
+
+"probcog.sim.SimBoxPC"
+{
+	16
+	vec 6
+	-0.0395983304626152 0.220276487009339 0.03 0.00000000000000 -0.00000000000000 0.00000000000000
+	0.0500000000000000
+	vec 4
+	0.00000000000000 1.00000000000000 0.00000000000000 1.00000000000000
+	3
+	color=color-green
+	shape=shape-block
+	size=size-small
 	vec 3
 	1 1 1
 }
-"probcog.sim.SimSteak"
+
+"probcog.sim.SimArchPC"
 {
-	8
+	17	
 	vec 6
-	0.0 0.1 0.05 0.0 0.0 0.0
-	0.04
+	0.2 -0.33 0.03 0 -0.0 3.14000000000000
+	0.0200000000000000
 	vec 4
-	1.0 1.0 1.0 1.0
-	2
-	shape=shape-steak
+	0.00000000000000 0.00000000000000 1.00000000000000 1.00000000000000
+	3
+	color=color-blue
+	shape=shape-arch
+	size=size-small
+}
+
+"probcog.sim.SimBoxPC"
+{
+	22
+	vec 6
+	0.24 -0.2 0.05  0.00000000000000 -0.00000000000000 0.00000000000000
+	0.0400000000000000
+	vec 4
+	0.60000000000000 0.00000000000000 1.00000000000000 1.00000000000000
+	3
+        color=color-purple
+	shape=shape-block
 	size=size-small
 	vec 3
 	1 1 1
