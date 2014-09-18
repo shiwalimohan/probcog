@@ -307,6 +307,7 @@ public class Obj
     	if(sourceSimObj == null || !(sourceSimObj instanceof ISimStateful)){
     		return new String[0];
     	}
+    	states = ((ISimStateful)sourceSimObj).getCurrentState();
     	String[] stateVals = new String[states.length]; 
     	for(int i = 0; i < states.length; i++){
     		stateVals[i] = states[i][0] + "=" + states[i][1];
